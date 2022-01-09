@@ -2,6 +2,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 
 //install Express app
 const app = express();
@@ -28,33 +29,36 @@ app.get("/notes", (req, res) => {
 app.get("/api/notes", (req, res) => {
   //'fs' to read file from db folder where users data is saved
   fs.readFile("db/db.json", "utf-8", (err, data) => {
-    //title, text and id that will be inputted and saved from user
-    var createNote = {
-      title: req.body.title,
-      text: req.body.text,
-      id: req.params.id,
-    };
+    if (err) throw err;
+    res.json(JSON.parse(data));
+  });
+});
 
-    //fs to readfile and added to HTML to display current note
-    fs.readFile("db/db.json", "utf-8", (err, data) => {
-      if (err) throw err;
-      var dataNotes = JSON.parse(dataNotes);
-      dataNotes.push(createNote);
-      fs.writeFile("db/db.json", JSON.stringify(dataNotes), (err) => {
-        err ? console.log(err) : console.log("Created new note");
-      });
-      res.sendFile(path.join(__dirname, "/public/notes.html"));
+app.post("/api/notes", (req, res) => {
+  //title, text and id that will be inputted and saved from user
+  var createNote = {
+    title: req.body.title,
+    text: req.body.text,
+    id: uuidv4(),
+  };
+  //fs to readfile and added to HTML to display current note
+  fs.readFile("db/db.json", "utf-8", (err, data) => {
+    if (err) throw err;
+    var dataNotes = JSON.parse(data);
+    dataNotes.push(createNote);
+    fs.writeFile("db/db.json", JSON.stringify(dataNotes), (err) => {
+      err ? console.log(err) : console.log("Created new note");
     });
+    res.sendFile(path.join(__dirname, "/public/notes.html"));
   });
 });
 // REQUEST DELETE  to delete note from the server
-app.delete("api/notes/:id", (req, res) => {
-  let deleteNote = req.params.id;
+app.delete("/api/notes/:id", (req, res) => {
+  var deleteNote = req.params.id;
   fs.readFile("db/db.json", "utf-8", (err, data) => {
     if (err) throw err;
-    dataNotes.JSON.parse(data);
-    //once deleted create a new note with variable and filter
-    let newNote = dataNotes.filter((note) => note.id !== deleteNote);
+    var database = JSON.parse(data);
+    var newNote = database.filter((note) => note.id !== deleteNote);
     fs.writeFile("db/db.json", JSON.stringify(newNote), (err) => {
       err ? console.log(err) : console.log("Deleted note");
     });
