@@ -11,6 +11,7 @@
 - ## [License](#License)
 - ## [Username](#Username)
 - ## [Email](#Email)
+- ## [Preview](#Preview)
 
 ---
 
@@ -20,8 +21,8 @@ Express.js required to create note taker application that allows user to write n
 
 ## Installation
 
-- npm install express,
-- npm install fs,
+- npm install express
+- npm install fs
 - npm install path
 - npm install uuidv4
 
@@ -50,3 +51,8 @@ chamibia
 ## Email
 
 bischami@gmail.com
+
+## Preview:
+
+![screenshot](./public/assets/images/maintaker.png)
+![screenshot](./public/assets/images/secondtaker.png)
