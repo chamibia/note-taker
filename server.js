@@ -16,12 +16,12 @@ app.use(express.static("public"));
 //Sends user to page
 //app.get to request to our server the index.html file information
 app.get("/", (req, res) => {
-  res.sendFile(path.join(_dirname, "/public/index.html"));
+  res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
 //app.get to get request through our server notes page
 app.get("/notes", (req, res) => {
-  res.sendFile(path.join(_dirname, "/public/notes.html"));
+  res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
 //use GET to request the API notes/ GET from db.json
@@ -29,7 +29,7 @@ app.get("/api/notes", (req, res) => {
   //'fs' to read file from db folder where users data is saved
   fs.readFile("db/db.json", "utf-8", (err, data) => {
     //title, text and id that will be inputted and saved from user
-    let createNote = {
+    var createNote = {
       title: req.body.title,
       text: req.body.text,
       id: req.params.id,
@@ -38,12 +38,12 @@ app.get("/api/notes", (req, res) => {
     //fs to readfile and added to HTML to display current note
     fs.readFile("db/db.json", "utf-8", (err, data) => {
       if (err) throw err;
-      const dataNotes = JSON.parse(data);
+      var dataNotes = JSON.parse(dataNotes);
       dataNotes.push(createNote);
       fs.writeFile("db/db.json", JSON.stringify(dataNotes), (err) => {
         err ? console.log(err) : console.log("Created new note");
       });
-      res.sendFile(path.join(_dirname, "/public/notes.html"));
+      res.sendFile(path.join(__dirname, "/public/notes.html"));
     });
   });
 });
@@ -58,7 +58,7 @@ app.delete("api/notes/:id", (req, res) => {
     fs.writeFile("db/db.json", JSON.stringify(newNote), (err) => {
       err ? console.log(err) : console.log("Deleted note");
     });
-    res.sendFile(path.join(_dirname, "/public/notes.html"));
+    res.sendFile(path.join(__dirname, "/public/notes.html"));
   });
 });
 //Server will listen at this port
